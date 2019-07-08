@@ -1,14 +1,14 @@
 from __future__ import print_function, division
 
-import datetime
 import os
 
+import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 from data_loader import DataLoader
 from tensorflow.keras.layers import Input, Concatenate
 from tensorflow.keras.layers import LeakyReLU
-from tensorflow.keras.layers import UpSampling2D, Conv2D, Conv2DTranspose, ZeroPadding2D
+from tensorflow.keras.layers import UpSampling2D, Conv2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow_addons.layers.normalizations import InstanceNormalization
@@ -23,31 +23,42 @@ def build_generator(img: Input) -> Model:
     """
 
     def downsampling2d(layer_input, filters):
-        """Layers used during downsampling"""
-        d = Conv2D(filters=filters, kernel_size=4, strides=2, padding='same')(layer_input)
+        """Layers used in the encoder"""
+        d = Conv2D(filters=filters,
+                   kernel_size=4,
+                   strides=2,
+                   padding='same')(layer_input)
         d = LeakyReLU(alpha=0.2)(d)
         d = InstanceNormalization()(d)
         return d
 
     def upsampling2d(layer_input, skip_input, filters):
-        """Layers used during upsampling"""
+        """
+        Layers used in the decoder
+        :param layer_input: input layer
+        :param skip_input: another input from the corresponding encoder block
+        :param filters: number of filter
+        """
         u = UpSampling2D(size=2)(layer_input)
-        u = Conv2D(filters, kernel_size=4, strides=1, padding='same', activation='relu')(u)
+        u = Conv2D(filters=filters,
+                   kernel_size=4,
+                   strides=1,
+                   padding='same',
+                   activation='relu')(u)
         u = InstanceNormalization()(u)
         u = Concatenate()([u, skip_input])
         return u
 
-    # Downsampling
+    # Encoder
     gf = 32
-
     d1 = downsampling2d(img, gf)
     d2 = downsampling2d(d1, gf * 2)
     d3 = downsampling2d(d2, gf * 4)
     d4 = downsampling2d(d3, gf * 8)
 
-    # Upsampling
-    # Note that we concatenate each deconv step with
-    # its corresponding downsampling step, as per U-net
+    # Decoder
+    # Note that we concatenate each upsampling2d block with
+    # its corresponding downsampling2d block, as per U-net
     u1 = upsampling2d(d4, d3, gf * 4)
     u2 = upsampling2d(u1, d2, gf * 2)
     u3 = upsampling2d(u2, d1, gf)
@@ -55,7 +66,11 @@ def build_generator(img: Input) -> Model:
     u4 = UpSampling2D(size=2)(u3)
     output_img = Conv2D(3, kernel_size=4, strides=1, padding='same', activation='tanh')(u4)
 
-    return Model(img, output_img)
+    model = Model(img, output_img)
+
+    model.summary()
+
+    return model
 
 
 def build_discriminator(img: Input) -> Model:
@@ -81,7 +96,11 @@ def build_discriminator(img: Input) -> Model:
 
     validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
 
-    return Model(img, validity)
+    model = Model(img, validity)
+
+    model.summary()
+
+    return model
 
 
 def train(epochs: int,
@@ -254,7 +273,7 @@ if __name__ == '__main__':
     valid_X = d_X(fake_X)
     valid_Y = d_Y(fake_Y)
 
-    # Combined model trains generators to fool discriminators
+    # Combined model trains both generators to fool the two discriminators
     combined = Model(inputs=[img_X, img_Y],
                      outputs=[valid_X, valid_Y,
                               reconstr_X, reconstr_Y,

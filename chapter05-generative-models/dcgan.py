@@ -17,7 +17,7 @@ def build_generator(latent_input: Input):
     model = Sequential([
         # start with a fully connected layer to upsample the 1d latent vector
         # the input_shape is the same as latent_input (excluding the mini-batch)
-        Dense(7 * 7 * 128, use_bias=False, input_shape=latent_input.shape[1:]),
+        Dense(7 * 7 * 256, use_bias=False, input_shape=latent_input.shape[1:]),
         BatchNormalization(),
         LeakyReLU(),
 
@@ -51,6 +51,8 @@ def build_generator(latent_input: Input):
                         use_bias=False,
                         activation='tanh'),
     ])
+
+    model.summary()
 
     # this is forward phase
     generated = model(latent_input)

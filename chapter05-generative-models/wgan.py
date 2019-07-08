@@ -73,8 +73,8 @@ def train(generator, critic, combined, steps, batch_size, n_critic, clip_value):
     Train the GAN model
     :param generator: generator model
     :param critic: the critic model
-    :param combined: stacked generator and discriminator
-    we'll use the combined network when we train the generator
+    :param combined: stacked generator and critic
+        we'll use the combined network when we train the generator
     :param steps: number of alternating steps for training
     :param batch_size: size of the minibatch
     :param n_critic: how many critic training steps for one generator step
@@ -126,8 +126,8 @@ def train(generator, critic, combined, steps, batch_size, n_critic, clip_value):
         generator_loss = combined.train_on_batch(noise, real)
 
         # Display progress
-        print("%d [Critic loss: %.4f%%, acc.: %.2f%%] [Generator loss: %.4f%%]" %
-              (step, critic_loss[0], 100 * critic_loss[1], generator_loss))
+        print("%d [Critic loss: %.4f%%] [Generator loss: %.4f%%]" %
+              (step, critic_loss[0], generator_loss))
 
 
 def plot_generated_images(generator):
