@@ -25,9 +25,9 @@ classes = [
     'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'hair brush']
 
 # Download object detection image
-image_file = 'source.jpg'
+image_file = 'source.png'
 if not os.path.isfile(image_file):
-    url = "https://upload.wikimedia.org/wikipedia/commons/c/c7/Abbey_Road_Zebra_crossing_2004-01.jpg"
+    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source.png"
     r = requests.get(url)
     with open(image_file, 'wb') as f:
         f.write(r.content)
@@ -77,7 +77,7 @@ for box, box_class, score in zip(output[0]['boxes'].detach().numpy(),
                     text=class_name,
                     org=box[0],
                     fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=3,
+                    fontScale=1,
                     color=color,
                     thickness=2)
 

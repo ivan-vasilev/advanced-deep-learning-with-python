@@ -38,9 +38,9 @@ with open(classes_file, 'r') as f:
     classes = [line.strip() for line in f.readlines()]
 
 # Download object detection image
-image_file = 'source.jpg'
+image_file = 'source.png'
 if not os.path.isfile(image_file):
-    url = "https://upload.wikimedia.org/wikipedia/commons/c/c7/Abbey_Road_Zebra_crossing_2004-01.jpg"
+    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source.png"
     r = requests.get(url)
     with open(image_file, 'wb') as f:
         f.write(r.content)
@@ -91,7 +91,7 @@ for out in outs:
         confidences.append(float(confidence))
 
 # non-max suppression
-ids = cv2.dnn.NMSBoxes(boxes, confidences, score_threshold=0.3, nms_threshold=0.5)
+ids = cv2.dnn.NMSBoxes(boxes, confidences, score_threshold=0.75, nms_threshold=0.5)
 
 # draw the bounding boxes on the image
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
@@ -115,7 +115,7 @@ for i in ids:
                 text=label,
                 org=(x - 10, y - 10),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                fontScale=3,
+                fontScale=1,
                 color=color,
                 thickness=2)
 
