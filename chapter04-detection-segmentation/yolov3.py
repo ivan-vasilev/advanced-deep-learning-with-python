@@ -96,6 +96,7 @@ ids = cv2.dnn.NMSBoxes(boxes, confidences, score_threshold=0.75, nms_threshold=0
 # draw the bounding boxes on the image
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
+# iterate over all boxes
 for i in ids:
     i = i[0]
     x, y, w, h = boxes[i]
