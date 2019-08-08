@@ -166,7 +166,7 @@ def plot_generated_images(generator, label: int):
 
 
 if __name__ == '__main__':
-    print("GAN for new MNIST images with Keras")
+    print("CGAN for new MNIST images with Keras")
 
     latent_dim = 64
 
