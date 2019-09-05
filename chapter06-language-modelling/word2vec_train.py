@@ -3,6 +3,7 @@ import pprint  # beautify prints
 
 import gensim
 import nltk
+nltk.download('punkt')
 
 logging.basicConfig(level=logging.INFO)
 
