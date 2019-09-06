@@ -1,7 +1,5 @@
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.optim as optim
 from gru_cell import GRUCell
 from lstm_cell import LSTMCell
 
@@ -13,63 +11,55 @@ SEQUENCE_LENGTH = 20  # binary sequence length
 HIDDEN_UNITS = 20  # hidden units of the LSTM cell
 
 
-class LSTMModel(nn.Module):
+class LSTMModel(torch.nn.Module):
     """LSTM model with a single output layer connected to the lstm cell output"""
 
-    def __init__(self, input_dim, hidden_size, output_dim):
+    def __init__(self, input_size, hidden_size, output_size):
         super(LSTMModel, self).__init__()
         self.hidden_size = hidden_size
 
-        self.lstm = LSTMCell(input_dim, hidden_size)
+        # Our own LSTM implementation
+        self.lstm = LSTMCell(input_size, hidden_size)
 
-        self.fc = nn.Linear(hidden_size, output_dim)
+        # Fully-connected output layer
+        self.fc = torch.nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
         # Start with empty network output and cell state to initialize the sequence
-        c_t = torch.zeros((self.hidden_size, x.size(0), self.hidden_size)).to(x.device)
-        h_t = torch.zeros((self.hidden_size, x.size(0), self.hidden_size)).to(x.device)
+        c_t = torch.zeros((x.size(0), self.hidden_size)).to(x.device)
+        h_t = torch.zeros((x.size(0), self.hidden_size)).to(x.device)
 
-        c_t, h_t = c_t[0, :, :], h_t[0, :, :]
-
+        # Iterate over all sequence elements across all sequences of the mini-batch
         for seq in range(x.size(1)):
             h_t, c_t = self.lstm(x[:, seq, :], (h_t, c_t))
 
-        # Remove unnecessary dimensions
-        out = h_t.squeeze()
-
         # Final output layer
-        out = self.fc(out)
-
-        return out
+        return self.fc(h_t)
 
 
-class GRUModel(nn.Module):
+class GRUModel(torch.nn.Module):
     """LSTM model with a single output layer connected to the lstm cell output"""
 
-    def __init__(self, input_dim, hidden_size, output_dim):
+    def __init__(self, input_size, hidden_size, output_size):
         super(GRUModel, self).__init__()
         self.hidden_size = hidden_size
 
-        self.gru = GRUCell(input_dim, hidden_size)
+        # Our own GRU implementation
+        self.gru = GRUCell(input_size, hidden_size)
 
-        self.fc = nn.Linear(hidden_size, output_dim)
+        # Fully-connected output layer
+        self.fc = torch.nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
         # Start with empty network output and cell state to initialize the sequence
-        h_t = torch.zeros((self.hidden_size, x.size(0), self.hidden_size)).to(x.device)
+        h_t = torch.zeros((x.size(0), self.hidden_size)).to(x.device)
 
-        h_t = h_t[0, :, :]
-
+        # Iterate over all sequence elements across all sequences of the mini-batch
         for seq in range(x.size(1)):
             h_t = self.gru(x[:, seq, :], h_t)
 
-        # Remove unnecessary dimensions
-        out = h_t.squeeze()
-
         # Final output layer
-        out = self.fc(out)
-
-        return out
+        return self.fc(h_t)
 
 
 def generate_dataset(sequence_length: int, samples: int):
@@ -187,18 +177,22 @@ if __name__ == '__main__':
     # number of hidden units
     # regression model output size (number of ones)
     if args.lstm:
-        model = LSTMModel(1, HIDDEN_UNITS, 1)
+        model = LSTMModel(input_size=1,
+                          hidden_size=HIDDEN_UNITS,
+                          output_size=1)
     elif args.gru:
-        model = GRUModel(1, HIDDEN_UNITS, 1)
+        model = GRUModel(input_size=1,
+                         hidden_size=HIDDEN_UNITS,
+                         output_size=1)
 
     # Transfer the model to the GPU
     model = model.to(device)
 
     # loss function (we use MSELoss because of the regression)
-    loss_function = nn.MSELoss()
+    loss_function = torch.nn.MSELoss()
 
     # Adam optimizer
-    optimizer = optim.Adam(model.parameters())
+    optimizer = torch.optim.Adam(model.parameters())
 
     # Train
     for epoch in range(EPOCHS):
