@@ -16,23 +16,16 @@ class PreActivationBlock(nn.Module):
         super(PreActivationBlock, self).__init__()
 
         self.bn_1 = nn.BatchNorm2d(in_slices)
-        self.conv_1 = nn.Conv2d(in_channels=in_slices,
-                                out_channels=slices,
-                                kernel_size=3,
-                                stride=stride,
-                                padding=1,
+        self.conv_1 = nn.Conv2d(in_channels=in_slices, out_channels=slices,
+                                kernel_size=3, stride=stride, padding=1,
                                 bias=False)
 
         self.bn_2 = nn.BatchNorm2d(slices)
-        self.conv_2 = nn.Conv2d(in_channels=slices,
-                                out_channels=slices,
-                                kernel_size=3,
-                                stride=1,
-                                padding=1,
+        self.conv_2 = nn.Conv2d(in_channels=slices, out_channels=slices,
+                                kernel_size=3, stride=1, padding=1,
                                 bias=False)
 
-        # if the input/output dimensions differ
-        # use convolution for the shortcut
+        # if the input/output dimensions differ use convolution for the shortcut
         if stride != 1 or in_slices != self.expansion * slices:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_channels=in_slices,
@@ -67,17 +60,13 @@ class PreActivationBottleneckBlock(nn.Module):
         super(PreActivationBottleneckBlock, self).__init__()
 
         self.bn_1 = nn.BatchNorm2d(in_slices)
-        self.conv_1 = nn.Conv2d(in_channels=in_slices,
-                                out_channels=slices,
+        self.conv_1 = nn.Conv2d(in_channels=in_slices, out_channels=slices,
                                 kernel_size=1,
                                 bias=False)
 
         self.bn_2 = nn.BatchNorm2d(slices)
-        self.conv_2 = nn.Conv2d(in_channels=slices,
-                                out_channels=slices,
-                                kernel_size=3,
-                                stride=stride,
-                                padding=1,
+        self.conv_2 = nn.Conv2d(in_channels=slices, out_channels=slices,
+                                kernel_size=3, stride=stride, padding=1,
                                 bias=False)
 
         self.bn_3 = nn.BatchNorm2d(slices)
@@ -86,14 +75,12 @@ class PreActivationBottleneckBlock(nn.Module):
                                 kernel_size=1,
                                 bias=False)
 
-        # if the input/output dimensions differ
-        # use convolution for the shortcut
+        # if the input/output dimensions differ use convolution for the shortcut
         if stride != 1 or in_slices != self.expansion * slices:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_channels=in_slices,
                           out_channels=self.expansion * slices,
-                          kernel_size=1,
-                          stride=stride,
+                          kernel_size=1, stride=stride,
                           bias=False)
             )
 
@@ -125,18 +112,14 @@ class PreActivationResNet(nn.Module):
         :param num_blocks: a list with 4 integer values.
             Each value reflects the number of residual blocks in the group
         :param num_classes: number of output classes
-
         """
 
         super(PreActivationResNet, self).__init__()
 
         self.in_slices = 64
 
-        self.conv_1 = nn.Conv2d(in_channels=3,
-                                out_channels=64,
-                                kernel_size=3,
-                                stride=1,
-                                padding=1,
+        self.conv_1 = nn.Conv2d(in_channels=3, out_channels=64,
+                                kernel_size=3, stride=1, padding=1,
                                 bias=False)
 
         self.layer_1 = self._make_group(block, 64, num_blocks[0], stride=1)
