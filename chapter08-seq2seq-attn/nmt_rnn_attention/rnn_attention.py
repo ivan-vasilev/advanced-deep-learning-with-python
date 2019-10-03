@@ -221,12 +221,15 @@ def evaluate(encoder, decoder, input_tensor, max_length=MAX_LENGTH):
             decoder_output, decoder_hidden, decoder_attention = decoder(
                 decoder_input, decoder_hidden, encoder_outputs)
             decoder_attentions[di] = decoder_attention.data
-            topv, topi = decoder_output.data.topk(1)
+
+            # Obtain the output word index with the highest probability
+            _, topi = decoder_output.data.topk(1)
             if topi.item() != EOS_token:
                 decoded_words.append(dataset.output_lang.index2word[topi.item()])
             else:
                 break
 
+            # Use the latest output word as the next input
             decoder_input = topi.squeeze().detach()
 
         return decoded_words, decoder_attentions[:di + 1]
