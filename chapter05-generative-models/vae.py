@@ -1,3 +1,6 @@
+"""
+This example is partially based on https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
+"""
 import matplotlib.pyplot as plt
 from matplotlib.markers import MarkerStyle
 import numpy as np

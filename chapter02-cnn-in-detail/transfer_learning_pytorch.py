@@ -1,3 +1,6 @@
+"""
+This example is partially based on https://github.com/pytorch/tutorials/blob/master/beginner_source/transfer_learning_tutorial.py
+"""
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
