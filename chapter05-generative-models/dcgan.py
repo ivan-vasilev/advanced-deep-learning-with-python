@@ -1,3 +1,29 @@
+"""
+MIT License
+
+This example is based on https://github.com/eriklindernoren/Keras-GAN
+Copyright (c) 2017 Erik Linder-Norén
+Copyright (c) 2019 Ivan Vasilev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.datasets import mnist
@@ -18,38 +44,25 @@ def build_generator(latent_input: Input):
         # start with a fully connected layer to upsample the 1d latent vector
         # the input_shape is the same as latent_input (excluding the mini-batch)
         Dense(7 * 7 * 256, use_bias=False, input_shape=latent_input.shape[1:]),
-        BatchNormalization(),
-        LeakyReLU(),
+        BatchNormalization(), LeakyReLU(),
 
         # reshape the noise to feed to the transposed convolutions
         Reshape((7, 7, 256)),
 
         # expand the input with transposed convolutions
-        Conv2DTranspose(filters=128,
-                        kernel_size=(5, 5),
-                        strides=(1, 1),
-                        padding='same',
-                        use_bias=False),
-        BatchNormalization(),
-        LeakyReLU(),
+        Conv2DTranspose(filters=128, kernel_size=(5, 5), strides=(1, 1),
+                        padding='same', use_bias=False),
+        BatchNormalization(), LeakyReLU(),
 
         # gradually reduce the volume depth
-        Conv2DTranspose(filters=64,
-                        kernel_size=(5, 5),
-                        strides=(2, 2),
-                        padding='same',
-                        use_bias=False),
-        BatchNormalization(),
-        LeakyReLU(),
+        Conv2DTranspose(filters=64, kernel_size=(5, 5), strides=(2, 2),
+                        padding='same', use_bias=False),
+        BatchNormalization(), LeakyReLU(),
 
         # final transposed convolution with tanh activation
         # the generated image has only one channel
-        Conv2DTranspose(filters=1,
-                        kernel_size=(5, 5),
-                        strides=(2, 2),
-                        padding='same',
-                        use_bias=False,
-                        activation='tanh'),
+        Conv2DTranspose(filters=1, kernel_size=(5, 5), strides=(2, 2),
+                        padding='same', use_bias=False, activation='tanh'),
     ])
 
     model.summary()
@@ -58,7 +71,7 @@ def build_generator(latent_input: Input):
     generated = model(latent_input)
 
     # build model from the input and output
-    return Model(z, generated)
+    return Model(z, model(latent_input))
 
 
 def build_discriminator():
@@ -66,19 +79,12 @@ def build_discriminator():
     Build discriminator network
     """
     model = Sequential([
-        Conv2D(filters=64,
-               kernel_size=(5, 5),
-               strides=(2, 2),
-               padding='same',
-               input_shape=(28, 28, 1)),
-        LeakyReLU(),
-        Dropout(0.3),
-        Conv2D(filters=128,
-               kernel_size=(5, 5),
-               strides=(2, 2),
+        Conv2D(filters=64, kernel_size=(5, 5), strides=(2, 2),
+               padding='same', input_shape=(28, 28, 1)),
+        LeakyReLU(), Dropout(0.3),
+        Conv2D(filters=128, kernel_size=(5, 5), strides=(2, 2),
                padding='same'),
-        LeakyReLU(),
-        Dropout(0.3),
+        LeakyReLU(), Dropout(0.3),
         Flatten(),
         Dense(1, activation='sigmoid'),
     ])
@@ -110,8 +116,7 @@ def train(generator, discriminator, combined, steps, batch_size):
     x_train = np.expand_dims(x_train, axis=-1)
 
     # Discriminator ground truths
-    real = np.ones((batch_size, 1))
-    fake = np.zeros((batch_size, 1))
+    real, fake = np.ones((batch_size, 1)), np.zeros((batch_size, 1))
 
     latent_dim = generator.input_shape[1]
 
@@ -210,15 +215,10 @@ if __name__ == '__main__':
     # Stack the generator and discriminator in a combined model
     # Trains the generator to deceive the discriminator
     combined = Model(z, real_or_fake)
-    combined.compile(loss='binary_crossentropy',
-                     optimizer=optimizer)
+    combined.compile(loss='binary_crossentropy', optimizer=optimizer)
 
     # train the GAN system
-    train(generator=generator,
-          discriminator=discriminator,
-          combined=combined,
-          steps=50000,
-          batch_size=100)
+    train(generator, discriminator, combined, steps=50000, batch_size=100)
 
     # display some random generated images
     plot_generated_images(generator)

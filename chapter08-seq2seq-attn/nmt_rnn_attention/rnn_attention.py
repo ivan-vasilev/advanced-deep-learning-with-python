@@ -1,4 +1,7 @@
-"""This example is partially based on https://github.com/pytorch/tutorials/blob/master/intermediate_source/seq2seq_translation_tutorial.py"""
+"""
+This example is partially based on https://github.com/pytorch/tutorials/blob/master/intermediate_source/seq2seq_translation_tutorial.py
+"""
+
 from __future__ import unicode_literals, print_function, division
 
 import random

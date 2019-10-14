@@ -24,6 +24,9 @@ if not os.path.isfile(yolo_weights):
     with open(yolo_weights, 'wb') as f:
         f.write(r.content)
 
+# load the network
+net = cv2.dnn.readNet(yolo_weights, yolo_config)
+
 # Download class names file
 # Contains the names of the classes the network can detect
 classes_file = 'coco.names'
@@ -49,9 +52,6 @@ if not os.path.isfile(image_file):
 image = cv2.imread(image_file)
 blob = cv2.dnn.blobFromImage(image, 1 / 255, (416, 416), (0, 0, 0), True, crop=False)
 
-# load the network
-net = cv2.dnn.readNet(yolo_weights, yolo_config)
-
 # set as input to the net
 net.setInput(blob)
 
@@ -76,19 +76,15 @@ for out in outs:
         # bounding box
         center_x = int(detection[0] * image.shape[1])
         center_y = int(detection[1] * image.shape[0])
-        w = int(detection[2] * image.shape[1])
-        h = int(detection[3] * image.shape[0])
-        x = center_x - w // 2
-        y = center_y - h // 2
+        w, h = int(detection[2] * image.shape[1]), int(detection[3] * image.shape[0])
+        x, y = center_x - w // 2, center_y - h // 2
         boxes.append([x, y, w, h])
 
-        # class
-        class_id = np.argmax(detection[5:])
-        class_ids.append(class_id)
-
         # confidence
-        confidence = detection[4]
-        confidences.append(float(confidence))
+        confidences.append(float(detection[4]))
+
+        # class
+        class_ids.append(np.argmax(detection[5:]))
 
 # non-max suppression
 ids = cv2.dnn.NMSBoxes(boxes, confidences, score_threshold=0.75, nms_threshold=0.5)

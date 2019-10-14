@@ -1,6 +1,11 @@
 """
 This example is partially based on https://github.com/pytorch/tutorials/blob/master/beginner_source/transfer_learning_tutorial.py
+The licensing information and the author of the base version are:
+# License: BSD
+# Author: Sasank Chilamkurthy
 """
+
+
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn

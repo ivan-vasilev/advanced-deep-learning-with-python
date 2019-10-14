@@ -1,8 +1,34 @@
+"""
+MIT License
+
+This example is based on https://github.com/eriklindernoren/Keras-GAN
+Copyright (c) 2017 Erik Linder-Norén
+Copyright (c) 2019 Ivan Vasilev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from __future__ import print_function, division
 
+import datetime
 import os
 
-import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 from data_loader import DataLoader
@@ -22,7 +48,7 @@ def build_generator(img: Input) -> Model:
     :param img: input image placeholder
     """
 
-    def downsampling2d(layer_input, filters):
+    def downsampling2d(layer_input, filters: int):
         """Layers used in the encoder"""
         d = Conv2D(filters=filters,
                    kernel_size=4,
@@ -32,7 +58,7 @@ def build_generator(img: Input) -> Model:
         d = InstanceNormalization()(d)
         return d
 
-    def upsampling2d(layer_input, skip_input, filters):
+    def upsampling2d(layer_input, skip_input, filters: int):
         """
         Layers used in the decoder
         :param layer_input: input layer
@@ -40,10 +66,7 @@ def build_generator(img: Input) -> Model:
         :param filters: number of filter
         """
         u = UpSampling2D(size=2)(layer_input)
-        u = Conv2D(filters=filters,
-                   kernel_size=4,
-                   strides=1,
-                   padding='same',
+        u = Conv2D(filters=filters, kernel_size=4, strides=1, padding='same',
                    activation='relu')(u)
         u = InstanceNormalization()(u)
         u = Concatenate()([u, skip_input])
@@ -163,14 +186,7 @@ def train(epochs: int,
 
             # Plot the progress
             print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, acc: %3d%%] [G loss: %05f, adv: %05f, recon: %05f, id: %05f] time: %s " \
-                  % (epoch, epochs,
-                     batch_i, data_loader.n_batches,
-                     d_loss[0], 100 * d_loss[1],
-                     g_loss[0],
-                     np.mean(g_loss[1:3]),
-                     np.mean(g_loss[3:5]),
-                     np.mean(g_loss[5:6]),
-                     elapsed_time))
+                  % (epoch, epochs,  batch_i, data_loader.n_batches, d_loss[0], 100 * d_loss[1], g_loss[0], np.mean(g_loss[1:3]), np.mean(g_loss[3:5]), np.mean(g_loss[5:6]), elapsed_time))
 
             # If at save interval => save generated image samples
             if batch_i % sample_interval == 0:

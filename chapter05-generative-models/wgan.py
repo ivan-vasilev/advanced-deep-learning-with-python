@@ -1,3 +1,30 @@
+"""
+MIT License
+
+This example is based on https://github.com/eriklindernoren/Keras-GAN
+Copyright (c) 2017 Erik Linder-Norén
+Copyright (c) 2019 Ivan Vasilev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow
@@ -186,8 +213,7 @@ if __name__ == '__main__':
 
     # Build and compile the discriminator
     critic = build_critic()
-    critic.compile(loss=wasserstein_loss,
-                   optimizer=optimizer,
+    critic.compile(optimizer, wasserstein_loss,
                    metrics=['accuracy'])
 
     # The discriminator takes generated image as input and determines validity
@@ -199,17 +225,11 @@ if __name__ == '__main__':
     # Stack the generator and discriminator in a combined model
     # Trains the generator to deceive the discriminator
     combined = Model(z, real_or_fake)
-    combined.compile(loss=wasserstein_loss,
-                     optimizer=optimizer)
+    combined.compile(loss=wasserstein_loss, optimizer=optimizer)
 
     # train the GAN system
-    train(generator=generator,
-          critic=critic,
-          combined=combined,
-          steps=40000,
-          batch_size=100,
-          n_critic=5,
-          clip_value=0.01)
+    train(generator, critic, combined,
+          steps=40000, batch_size=100, n_critic=5, clip_value=0.01)
 
     # display some random generated images
     plot_generated_images(generator)
