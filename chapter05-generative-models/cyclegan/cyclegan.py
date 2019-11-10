@@ -186,7 +186,7 @@ def train(epochs: int,
 
             # Plot the progress
             print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, acc: %3d%%] [G loss: %05f, adv: %05f, recon: %05f, id: %05f] time: %s " \
-                  % (epoch, epochs,  batch_i, data_loader.n_batches, d_loss[0], 100 * d_loss[1], g_loss[0], np.mean(g_loss[1:3]), np.mean(g_loss[3:5]), np.mean(g_loss[5:6]), elapsed_time))
+                  % (epoch, epochs, batch_i, data_loader.n_batches, d_loss[0], 100 * d_loss[1], g_loss[0], np.mean(g_loss[1:3]), np.mean(g_loss[3:5]), np.mean(g_loss[5:6]), elapsed_time))
 
             # If at save interval => save generated image samples
             if batch_i % sample_interval == 0:
