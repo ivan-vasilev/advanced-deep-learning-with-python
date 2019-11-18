@@ -169,31 +169,24 @@ def train(model: torch.nn.Module, device: torch.device):
 def train_epoch(model, device, loss_function, optimizer, data_loader):
     """Train for a single epoch"""
 
-    # set model to training mode
-    model.train()
+    model.train()  # set model to training mode
 
     current_loss, current_acc = 0.0, 0.0
 
-    # iterate over the training data
     for i, (inputs, labels) in enumerate(data_loader):
-        # send the input/labels to the GPU
-        inputs, labels = inputs.to(device), labels.to(device)
+        inputs, labels = inputs.to(device), labels.to(device)  # send to device
 
-        # zero the parameter gradients
-        optimizer.zero_grad()
+        optimizer.zero_grad()  # zero the parameter gradients
 
         with torch.set_grad_enabled(True):
-            # forward
-            outputs = model(inputs)
+            outputs = model(inputs)  # forward
             _, predictions = torch.max(outputs, 1)
             loss = loss_function(outputs, labels)
 
-            # backward
-            loss.backward()
+            loss.backward()  # backward
             optimizer.step()
 
-        # statistics
-        current_loss += loss.item() * inputs.size(0)
+        current_loss += loss.item() * inputs.size(0)  # statistics
         current_acc += torch.sum(predictions == labels.data)
 
     total_loss = current_loss / len(data_loader.dataset)

@@ -2,7 +2,7 @@ import os
 
 import torch
 
-from nn_agent import nn_agent_play
+from nn_agent import nn_agent_drive
 from train import \
     DATA_DIR, \
     MODEL_FILE, \
@@ -32,4 +32,4 @@ if __name__ == '__main__':
     train(model, dev)
 
     # agent play
-    nn_agent_play(model, dev)
+    nn_agent_drive(model, dev)

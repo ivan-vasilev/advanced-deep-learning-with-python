@@ -309,8 +309,10 @@ def build_model(source_vocabulary: int,
         encoder=Encoder(EncoderBlock(d_model, c(attn), c(ff), dropout), N),
         decoder=Decoder(DecoderBlock(d_model, c(attn), c(attn),
                                      c(ff), dropout), N, target_vocabulary),
-        source_embeddings=torch.nn.Sequential(Embeddings(d_model, source_vocabulary), c(position)),
-        target_embeddings=torch.nn.Sequential(Embeddings(d_model, target_vocabulary), c(position)))
+        source_embeddings=torch.nn.Sequential(
+            Embeddings(d_model, source_vocabulary), c(position)),
+        target_embeddings=torch.nn.Sequential(
+            Embeddings(d_model, target_vocabulary), c(position)))
 
     # This was important from their code.
     # Initialize parameters with Glorot / fan_avg.
