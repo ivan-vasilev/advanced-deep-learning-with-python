@@ -6,7 +6,7 @@ import requests
 import torchvision
 import torchvision.transforms as transforms
 
-print("Faster R-CNN instance segmentation")
+print("Mask R-CNN instance segmentation")
 
 # COCO dataset class names
 classes = [

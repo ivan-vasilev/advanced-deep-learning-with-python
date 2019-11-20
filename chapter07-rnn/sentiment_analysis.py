@@ -134,6 +134,6 @@ loss_function = torch.nn.BCEWithLogitsLoss().to(device)
 model = model.to(device)
 
 for epoch in range(5):
-    print(f"Epoch {epoch}/5")
+    print(f"Epoch {epoch + 1}/5")
     train_model(model, loss_function, optimizer, train_iter)
     test_model(model, loss_function, test_iter)

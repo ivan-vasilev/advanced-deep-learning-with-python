@@ -55,7 +55,7 @@ for box, box_class, score in zip(output[0]['boxes'].detach().numpy(),
                                  output[0]['scores'].detach().numpy()):
 
     # filter the boxes by score
-    if score > 0.9:
+    if score > 0.5:
         # transform bounding box format
         box = [(box[0], box[1]), (box[2], box[3])]
 
