@@ -35,18 +35,18 @@ def attention(query, key, value, mask=None, dropout=None):
     """Scaled Dot Product Attention"""
     d_k = query.size(-1)
 
-    # 1) Compute the alignment scores with scaling (note the transpose
+    # 1) and 2) Compute the alignment scores with scaling
     scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
     if mask is not None:
         scores = scores.masked_fill(mask == 0, -1e9)
 
-    # 2) Compute the attention scores (softmax)
+    # 3) Compute the attention scores (softmax)
     p_attn = torch.nn.functional.softmax(scores, dim=-1)
 
     if dropout is not None:
         p_attn = dropout(p_attn)
 
-    # 3) Apply the attention scores over the values
+    # 4) Apply the attention scores over the values
     return torch.matmul(p_attn, value), p_attn
 
 

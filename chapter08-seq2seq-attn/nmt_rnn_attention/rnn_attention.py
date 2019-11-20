@@ -279,7 +279,7 @@ def evaluate_and_plot_attention(input_sentence, encoder, decoder):
     plot_attention(input_sentence, output_words, attentions)
 
 
-dataset = NMTDataset('nmt_rnn_attention/data/eng-fra.txt', DATASET_SIZE)
+dataset = NMTDataset('data/eng-fra.txt', DATASET_SIZE)
 
 enc = EncoderRNN(dataset.input_lang.n_words, HIDDEN_SIZE).to(device)
 dec = AttnDecoderRNN(HIDDEN_SIZE, dataset.output_lang.n_words, dropout=0.1).to(device)

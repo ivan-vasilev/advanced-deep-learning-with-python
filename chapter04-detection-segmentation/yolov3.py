@@ -41,9 +41,9 @@ with open(classes_file, 'r') as f:
     classes = [line.strip() for line in f.readlines()]
 
 # Download object detection image
-image_file = 'source.png'
+image_file = 'source_1.png'
 if not os.path.isfile(image_file):
-    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source.png"
+    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source_1.png"
     r = requests.get(url)
     with open(image_file, 'wb') as f:
         f.write(r.content)
@@ -100,8 +100,6 @@ for i in ids:
 
     color = colors[class_id]
 
-    label = classes[class_id]
-
     cv2.rectangle(img=image,
                   pt1=(round(x), round(y)),
                   pt2=(round(x + w), round(y + h)),
@@ -109,10 +107,10 @@ for i in ids:
                   thickness=3)
 
     cv2.putText(img=image,
-                text=label,
+                text=f"{classes[class_id]}: {confidences[i]:.2f}",
                 org=(x - 10, y - 10),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                fontScale=1,
+                fontScale=0.8,
                 color=color,
                 thickness=2)
 

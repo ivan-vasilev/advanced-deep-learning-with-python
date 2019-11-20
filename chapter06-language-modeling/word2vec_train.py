@@ -36,5 +36,8 @@ model = gensim.models.word2vec. \
              iter=5,  # number of epochs
              )
 
+print("Words most similar to 'mother':")
 pprint.pprint(model.wv.most_similar(positive='mother', topn=5))
+
+print("Words most similar to 'woman' and 'king':")
 pprint.pprint(model.wv.most_similar(positive=['woman', 'king'], topn=5))

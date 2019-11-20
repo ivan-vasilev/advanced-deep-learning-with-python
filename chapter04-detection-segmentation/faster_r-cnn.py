@@ -25,9 +25,9 @@ classes = [
     'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'hair brush']
 
 # Download object detection image
-image_file = 'source.png'
+image_file = 'source_2.png'
 if not os.path.isfile(image_file):
-    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source.png"
+    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source_2.png"
     r = requests.get(url)
     with open(image_file, 'wb') as f:
         f.write(r.content)
@@ -70,7 +70,7 @@ for box, box_class, score in zip(output[0]['boxes'].detach().numpy(),
                       pt1=box[0],
                       pt2=box[1],
                       color=color,
-                      thickness=3)
+                      thickness=2)
 
         # display the box class label
         cv2.putText(img=img,
