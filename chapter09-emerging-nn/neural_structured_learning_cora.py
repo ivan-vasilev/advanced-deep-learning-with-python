@@ -114,6 +114,7 @@ graph_reg_model.compile(
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy'])
 
+# run eagerly to prevent epoch warnings
 graph_reg_model.run_eagerly = True
 
 graph_reg_model.fit(train_dataset, epochs=100, verbose=1)
