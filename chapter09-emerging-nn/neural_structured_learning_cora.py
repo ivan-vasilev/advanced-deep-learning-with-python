@@ -1,10 +1,9 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
 import neural_structured_learning as nsl
 import tensorflow as tf
 
 # Cora dataset path
-TRAIN_DATA_PATH = '/data/train_merged_examples.tfr'
-TEST_DATA_PATH = '/data/test_examples.tfr'
+TRAIN_DATA_PATH = 'data/train_merged_examples.tfr'
+TEST_DATA_PATH = 'data/test_examples.tfr'
 # Constants used to identify neighbor features in the input.
 NBR_FEATURE_PREFIX = 'NL_nbr_'
 NBR_WEIGHT_SUFFIX = '_weight'
@@ -88,9 +87,6 @@ def build_model(dropout_rate):
         tf.keras.layers.InputLayer(
             input_shape=(MAX_SEQ_LENGTH,), name='words'),
 
-        # cast to float
-        tf.keras.layers.Lambda(lambda x: tf.keras.backend.cast(x, tf.float32)),
-
         # 2 fully-connected layers + dropout
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dropout(dropout_rate),
@@ -117,6 +113,9 @@ graph_reg_model.compile(
     optimizer='adam',
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy'])
+
+graph_reg_model.run_eagerly = True
+
 graph_reg_model.fit(train_dataset, epochs=100, verbose=1)
 
 eval_results = dict(
