@@ -43,7 +43,7 @@ with open(classes_file, 'r') as f:
 # Download object detection image
 image_file = 'source_1.png'
 if not os.path.isfile(image_file):
-    url = "https://github.com/ivan-vasilev/Mastering-Deep-Learning/blob/master/chapter04-detection-segmentation/source_1.png"
+    url = "https://github.com/ivan-vasilev/advanced-deep-learning-with-python/blob/master/chapter04-detection-segmentation/source_1.png"
     r = requests.get(url)
     with open(image_file, 'wb') as f:
         f.write(r.content)

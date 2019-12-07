@@ -302,7 +302,7 @@ if __name__ == '__main__':
                                    lambda_id, lambda_id],
                      optimizer=optimizer)
 
-    train(epochs=200,
+    train(epochs=75,
           batch_size=1,
           data_loader=data_loader,
           g_XY=g_XY,
