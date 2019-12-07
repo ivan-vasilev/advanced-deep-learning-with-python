@@ -296,7 +296,7 @@ test_loader = torch.utils.data.DataLoader(dataset=testset,
                                           shuffle=False,
                                           num_workers=2)
 
-# load the pre-trained model
+# load the model
 model = PreActivationResNet34()
 
 # select gpu 0, if available
