@@ -1,1 +1,1 @@
-Source code for chapter _Language Modeling_. The examples implement training and t-SNE isualization of word2vec embeddings model. 
+Source code for chapter _Understanding Recurrent Networks_. The examples include basic RNN for counting 1s in a binary sequence, LSTM and GRU cell implementations, and sentiment analysis. 

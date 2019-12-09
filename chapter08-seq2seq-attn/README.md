@@ -1,1 +1,1 @@
-Source code for chapter _Understanding Recurrent Networks_. The examples include basic RNN for counting 1s in a binary sequence, LSTM and GRU cell implementations, and sentiment analysis. 
+Source code for chapter _Sequence-to-Sequence Models and Attention_. The examples include neural machine translation with RNN attention model, PyTorch transformer implemented from scratch, and text generation using the HuggingFace transformers library. 

@@ -1,1 +1,1 @@
-Source code for chapter _Emerging Neural Network Designs_. The example implementes [Neural Structured Learning](https://www.tensorflow.org/neural_structured_learning) using TensorFlow 2.0. 
+Source code for chapter _Meta learning_. The example implements siamese networks using TensorFlow 2.0. 

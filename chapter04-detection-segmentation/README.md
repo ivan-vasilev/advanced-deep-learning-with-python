@@ -1,1 +1,1 @@
-Source code for chapter _Advanced Convolutional Networks_. The example implements ResNet from scratch using PyTorch. 
+Source code for chapter _Object Detection and Image Segmentation_. The object detection examples implement YOLOV3 and Faster R-CNN. The image segmentation example implements Mask R-CNN. 

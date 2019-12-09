@@ -1,1 +1,1 @@
-Source code for chapter _Object Detection and Image Segmentation_. The object detection examples implement YOLOV3 and Faster R-CNN. The image segmentation example implements Mask R-CNN. 
+Source code for chapter _Generative Models_. The examples implement DCGAN, Conditional GAN, Wasserstein GAN, and CycleGAN. 
