@@ -1,3 +1,8 @@
+"""
+This example is partially based on https://www.tensorflow.org/neural_structured_learning/tutorials/graph_keras_mlp_cora
+License of the base version: Apache License, Version 2.0
+"""
+
 import neural_structured_learning as nsl
 import tensorflow as tf
 
