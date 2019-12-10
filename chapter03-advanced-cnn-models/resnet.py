@@ -1,3 +1,6 @@
+"""
+The code in this example is partially based on the pre-activation ResNet implementation in https://github.com/kuangliu/pytorch-cifar
+"""
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn

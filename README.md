@@ -19,6 +19,6 @@ Table of contents:
 10. Meta Learning
 11. Deep Learning for Autonomous Vehicles	
 
-_All book samples were tested against TensorFlow 2.0.0 and PyTorch 1.3.1_
+_All code examples were tested against TensorFlow 2.0.0 and PyTorch 1.3.1_
 
-_Some of the code samples are adapted from other open-source code repositories. In such cases, the base example is linked at the beginning of the code file._  
+_Some of the code example are adapted from other open-source code repositories. In such cases, the base example is linked at the beginning of the code file._  
