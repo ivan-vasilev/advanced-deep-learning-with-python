@@ -2,8 +2,7 @@
  
 This is the code repository for the book [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation-ebook/dp/B082DHGVT5/), published by Packt.
 
-![Cover](https://www.packtpub.com/media/catalog/product/cache/ecd051e9670bd57df35c8f0b122d8aea/9/7/9781789956177-original.jpeg)
-
+![Cover](https://www.packtpub.com/media/catalog/product/cache/ecd051e9670bd57df35c8f0b122d8aea/9/7/9781789956177-original.png)
 
 Table of contents:
 
